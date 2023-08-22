@@ -1,26 +1,45 @@
-#  Как работать с репозиторием финального задания
+# Kittygram
 
-## Что нужно сделать
+## Описание
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+Kittygram — социальная сеть для обмена фотографиями любимых питомцев. Пользователи могут вводить имя, год рождения, цвет, достижения, а также добавить фото питомца
 
-## Как проверить работу с помощью автотестов
+## Технологии
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
-```
+- Django==3.2.3
+- djangorestframework==3.12.4
+- djoser==2.1.0
+- webcolors==1.11.1
+- psycopg2-binary==2.9.3
+- Pillow==9.0.0
+- pytest==6.2.4
+- pytest-django==4.4.0
+- pytest-pythonpath==0.7.3
+- PyYAML==6.0
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
+### Установка и запуск проекта
 
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
+1. Клонирование кода приложения с GitHub.
+    - git clone SSH-ссылка
 
-## Чек-лист для проверки перед отправкой задания
+2. Создать файл .env.example в котором перечислены все переменные окружения.
+    - POSTGRES_DB=
+    - POSTGRES_USER=
+    - POSTGRES_PASSWORD=
 
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+3. Проверить созданные образы.
+    - docker image ls
+
+4. Запустить Docker Compose на компьютере.
+    - docker compose -f docker-compose.production.yml up
+
+5. Собрать статику.
+    - docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+    - docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/
+
+6. Применить миграции.
+    - docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+
+#### Автор
+
+Светлана Шатунова
